@@ -29,7 +29,6 @@ const App = () => {
 
   const indexOfTopVotes = points.indexOf(Math.max(...points))
 
-  console.log(indexOfTopVotes)
   return (
     <div>
       <h1>Anecdotes</h1>
