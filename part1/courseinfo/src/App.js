@@ -1,21 +1,19 @@
 import React from 'react'
 
 const Header = (props) => (
-  <>
   <h1>{props.title}</h1>
-  </>
 )
 
 const Part = (props) => (
-  <p>{props.part} {props.exercises}</p>
+  <p>{props.name} {props.exercises}</p>
 )
 
 const Content = (props) => {
-  const contentEl = props.content.map(content => (
+  const contentEl = props.parts.map(part => (
     <Part 
-      key={content.part}
-      part={content.part} 
-      exercises={content.exercises} />
+      key={part.name}
+      name={part.name}
+      exercises={part.exercises} />
   ))
 
   return (
@@ -30,29 +28,27 @@ const Total = (props) => (
 )
 
 const App = () => {
+
   const course = 'Half Stack application development'
+  const part1 = {
+    name: 'Fundamentals of React',
+    exercises: 10
+  }
+  const part2 = {
+    name: 'Using props to pass data',
+    exercises: 7
+  }
+  const part3 = {
+    name: 'State of a component',
+    exercises: 14
+  }
 
-  const content = [
-    {
-      part: 'Fundamentals of React',
-      exercises: 10
-    },
-    {
-      part: 'Using props to pass data',
-      exercises: 7
-    },
-    {
-      part: 'State of a component',
-      exercises: 14
-    },
-  ]
-
-  const totalExercises = content[0].exercises + content[1].exercises + content[2].exercises
+  const totalExercises = part1.exercises + part2.exercises + part3.exercises
 
   return (
     <div>
       <Header title={course} />
-      <Content content={content} />
+      <Content parts={[part1, part2, part3]} />
       <Total totalExercises={totalExercises} />
     </div>
   )
