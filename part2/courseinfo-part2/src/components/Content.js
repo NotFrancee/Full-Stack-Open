@@ -9,9 +9,7 @@ const Content = ({course}) => {
             part={part}/> 
     ))
 
-    const totalExercises = course.parts.reduce((sum, part) => {
-        return sum + part.exercises
-    }, 0)
+    const totalExercises = course.parts.reduce((s, p) => s + p.exercises, 0)
 
     return (
         <>
