@@ -15,6 +15,12 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault() 
 
+    if (persons.filter(person => person.name === newName).length) {
+      window.alert(`${newName} is already saved in your contacts!`)
+      setNewName("")
+      return
+    }
+
     const newPerson = {
       name: newName
     }
