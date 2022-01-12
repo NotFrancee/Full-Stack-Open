@@ -14,7 +14,7 @@ const Content = ({course}) => {
     return (
         <>
         {partsEl}
-        <p>Total of {totalExercises} Exercises</p>
+        <p><strong>Total of {totalExercises} Exercises</strong></p>
         </>
     )
 }
