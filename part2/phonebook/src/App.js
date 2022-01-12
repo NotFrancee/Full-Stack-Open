@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -57,46 +61,28 @@ const App = () => {
     })
   }
 
-  const personsToShow = searchFilter ? persons.filter(person => person.name.toLowerCase().includes(searchFilter)) : persons
-
-  const numbersEl = personsToShow.map(person => <p key={person.name}>{person.name} - {person.number}</p>)
-
   return (
     <div>
       <h2>Phonebook</h2>
 
-      filter shown with <input 
-        name='searchFilter'
-        value={searchFilter} 
-        placeholder='Search Name' 
-        onChange={handleFilterChange}
-      />
+      <Filter 
+        searchFilter={searchFilter} 
+        handleFilterChange={handleFilterChange}/>
 
       <h2>Add a new Contact</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input 
-                  name='name'
-                  value={formData.name} 
-                  placeholder='New Name' 
-                  onChange={handleFormChange}
-                  />
-        </div>
-        <div>
-          number: <input 
-                      name='number'
-                      value={formData.number} 
-                      placeholder='Phone Number' 
-                      onChange={handleFormChange}/>
-        
-        </div>
 
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm 
+        handleSubmit={handleSubmit}
+        formData={formData}
+        handleFormChange={handleFormChange}
+      />
+
       <h2>Numbers</h2>
-      {numbersEl}
+
+      <Persons 
+        persons={persons}
+        searchFilter={searchFilter}
+        />
     </div>
   )
 }
