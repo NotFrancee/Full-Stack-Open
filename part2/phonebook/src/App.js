@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import axios from "axios"
 import phonebookServices from './services/phonebookServices'
 
 import Filter from './components/Filter'
@@ -63,7 +62,21 @@ const App = () => {
         })
       })
   }
+  
+  const handleDelete = (id) => {
+    const personToDelete = persons.find(person => person.id === id)
+    const confirm = window.confirm(`do you really want to delete ${personToDelete.name}?`)
 
+    if (!confirm) {
+      return
+    }
+    
+    phonebookServices
+      .deletePhone(id)
+      .then(res => {
+        setPersons(prev => prev.filter(person => person.id !== id))
+      })
+  }
   useEffect(() => {
     phonebookServices
       .getAll()
@@ -93,6 +106,7 @@ const App = () => {
       <Persons 
         persons={persons}
         searchFilter={searchFilter}
+        handleDelete={handleDelete}
         />
     </div>
   )

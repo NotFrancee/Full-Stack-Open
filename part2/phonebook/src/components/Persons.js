@@ -1,14 +1,12 @@
 import React from "react";
 import Person from "./Person";
 
-const Persons = ({persons, searchFilter}) => {
+const Persons = ({persons, searchFilter, handleDelete}) => {
 
-    const personsToShow = searchFilter 
-        ? persons.filter(person => person.name.toLowerCase().includes(searchFilter)) 
-        : persons
+    const personsToShow = persons.filter(person => person.name.toLowerCase().includes(searchFilter)) 
 
     const personsEl = personsToShow.map(person => (
-        <Person person={person} key={person.name} />
+        <Person person={person} key={person.name} handleDelete={handleDelete}/>
     ))
     
     return (
