@@ -1,26 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Country = ({country}) => {
-    const {name, capital, population, languages, flags} = country
+import axios from "axios"
+import CountryDetail from "./CountryDetail";
 
-    const languagesEl = Object.keys(languages).map(language => {
-        return (
-            <li>{languages[language]}</li>
-        )
-    })
-    return (
+const Country = ({country, showingInfo, handleClick}) => {
+    const {name} = country
+    
+    return showingInfo
+    ? (
         <>
-            <h1>{name.common}</h1>
-            <p>Capital: {capital.join(" ")}</p>
-            <p>Population: {population}</p>
-
-            <h2>Languages</h2>
-
-            <ul>
-                {languagesEl}
-            </ul>
-
-            <img src={flags.svg} alt={`${name.common} flag`} />
+            <CountryDetail country={country}/>
+        </>
+    )
+    
+    : (
+        <>
+            <p>{name.common}</p>
+            <button onClick={handleClick}>show</button>
         </>
     )
 }

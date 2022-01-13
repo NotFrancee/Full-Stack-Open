@@ -1,35 +1,17 @@
 import React from "react";
-import Country from "./Country";
+import Countries from "./Countries";
 
 const Content = ({countries, searchQuery}) => {
-
-    console.log(countries)
     const countriesToShow = countries.filter(country => (country.name.common.toLowerCase().includes(searchQuery)))
-    const countriesNo = countriesToShow.length
 
-    let contentEl
+    return countriesToShow.length > 10 
+    ? (
+        <p>Too many Matches, specify more filters</p>
+    )
 
-    if (countriesNo === 1) {
-        contentEl = <Country 
-                        country={countriesToShow[0]} 
-                    />
-    } else if (countriesNo < 11) {
-        contentEl = countriesToShow.map(country => {
-            return <p 
-                key={country.name.official}
-                >{country.name.common}
-            </p>
-        })
-    } else {
-        contentEl = <p>Too many Matches, specify more filters</p>
-    }
-
-    console.log(countriesNo);
-    console.log(contentEl);
-
-    return (
+    : (
         <>
-        {contentEl}
+            <Countries countriesToShow={countriesToShow}/>
         </>
     )
 }
