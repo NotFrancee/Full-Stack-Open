@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import axios from "axios"
+import phonebookServices from './services/phonebookServices'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -47,25 +48,27 @@ const App = () => {
       name: formData.name,
       number: formData.number
     }
-    setPersons(prev => ([
-      ...prev,
-      newPerson
-    ]))
 
-    setFormData({
-      name: "",
-      number: ""
-    })
+    phonebookServices
+      .addPhone(newPerson)
+      .then(response => {        
+        setPersons(prev => ([
+          ...prev,
+          response
+        ]))
+  
+        setFormData({
+          name: "",
+          number: ""
+        })
+      })
   }
 
   useEffect(() => {
-    console.log("effect started")
-
-    axios
-      .get("http://localhost:3001/persons")
-      .then(res => {
-        console.log("data fetched")
-        setPersons(res.data)
+    phonebookServices
+      .getAll()
+      .then(phones => {
+        setPersons(phones)
       })
   }, [])
 
