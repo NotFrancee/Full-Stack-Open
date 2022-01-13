@@ -14,6 +14,12 @@ const addPhone = (newPhone) => {
     return request.then(res => res.data)
 }
 
+const editPhone = (id, newPhone) => {
+    const request = axios.put(`${baseUrl}/${id}`, newPhone)
+    
+    return request.then(res => res.data)
+}
+
 const deletePhone = (id) => {
     const request = axios.delete(`${baseUrl}/${id}`)
 
@@ -23,5 +29,6 @@ const deletePhone = (id) => {
 export default {
     getAll, 
     addPhone,
+    editPhone,
     deletePhone
 }

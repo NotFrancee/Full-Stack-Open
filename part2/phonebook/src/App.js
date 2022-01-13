@@ -14,6 +14,13 @@ const App = () => {
     number: ""
   })
 
+  const resetFormData = () => {
+    setFormData({
+      name: "",
+      number: ""
+    })
+  }
+
   const [searchFilter, setSearchFilter] = useState("")
 
   const handleFilterChange = (event) => {
@@ -32,15 +39,40 @@ const App = () => {
   }
 
   const handleSubmit = (event) => {
-    event.preventDefault() 
+    event.preventDefault()
 
-    if (persons.filter(person => person.name === formData.name).length) {
-      window.alert(`${formData.name} is already saved in your contacts!`)
-      setFormData({
-        name: "",
-        number: ""
-      })
-      return
+    const duplicate = persons.find(person => person.name === formData.name)
+    if (duplicate) {
+      if (duplicate.number === formData.number) {
+        window.alert(`${formData.name} is already saved in your contacts!`)
+        resetFormData() 
+        return
+
+      } else {
+        const confirm = window.confirm(`${duplicate.name} is already saved in your contacts with number ${duplicate.number}. Do you want to replace this number with ${formData.number}?`)
+        if (!confirm) {
+          resetFormData() 
+          return
+        }
+
+        const newPhone = {
+          ...duplicate,
+          number: formData.number
+        }
+
+        phonebookServices
+          .editPhone(newPhone.id, newPhone)
+          .then(editedPhone => {
+            setPersons(prev => prev.map(person => person.id === editedPhone.id ? editedPhone : person))
+            resetFormData() 
+            return
+          })
+
+
+        return
+      }
+
+
     }
 
     const newPerson = {
@@ -56,10 +88,7 @@ const App = () => {
           response
         ]))
   
-        setFormData({
-          name: "",
-          number: ""
-        })
+        resetFormData()
       })
   }
   
@@ -70,13 +99,14 @@ const App = () => {
     if (!confirm) {
       return
     }
-    
+
     phonebookServices
       .deletePhone(id)
       .then(res => {
         setPersons(prev => prev.filter(person => person.id !== id))
       })
   }
+
   useEffect(() => {
     phonebookServices
       .getAll()
