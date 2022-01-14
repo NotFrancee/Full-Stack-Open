@@ -135,6 +135,15 @@ const App = () => {
 
         resetNotification()
       })
+
+      .catch(err => {
+        setNotification({
+          message: `Couldn't delete ${personToDelete.name}: the contact has already been deleted before!`,
+          isError: true
+        })
+        resetNotification() 
+      })
+
   }
 
   useEffect(() => {
