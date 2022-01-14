@@ -5,13 +5,18 @@ import phonebookServices from './services/phonebookServices'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
-
   const [formData, setFormData] = useState({
     name: "",
     number: ""
+  })
+  const [searchFilter, setSearchFilter] = useState("")
+  const [notification, setNotification] = useState({
+    message: null,
+    isError: false
   })
 
   const resetFormData = () => {
@@ -21,7 +26,14 @@ const App = () => {
     })
   }
 
-  const [searchFilter, setSearchFilter] = useState("")
+  const resetNotification = () => {
+    setTimeout(() => {
+      setNotification({
+        message: null,
+        isError: false
+      })
+    }, 3000);
+  }
 
   const handleFilterChange = (event) => {
     const {value} = event.target
@@ -64,7 +76,13 @@ const App = () => {
           .editPhone(newPhone.id, newPhone)
           .then(editedPhone => {
             setPersons(prev => prev.map(person => person.id === editedPhone.id ? editedPhone : person))
+            setNotification({
+              message: `Successfully changed ${editedPhone.name} number to ${editedPhone.number}`,
+              isError: false
+            })
+            
             resetFormData() 
+            resetNotification() 
             return
           })
 
@@ -82,13 +100,18 @@ const App = () => {
 
     phonebookServices
       .addPhone(newPerson)
-      .then(response => {        
+      .then(newContact => {        
         setPersons(prev => ([
           ...prev,
-          response
+          newContact
         ]))
-  
+        setNotification({
+          message: `successfully added ${newContact.name} to contacts!`,
+          isError: false
+        })
+
         resetFormData()
+        resetNotification()
       })
   }
   
@@ -104,6 +127,13 @@ const App = () => {
       .deletePhone(id)
       .then(res => {
         setPersons(prev => prev.filter(person => person.id !== id))
+
+        setNotification({
+          message: `Successufly deleted ${personToDelete.name}`,
+          isError: false
+        })
+
+        resetNotification()
       })
   }
 
@@ -118,6 +148,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification.message} isError={notification.isError}/>
 
       <Filter 
         searchFilter={searchFilter} 
